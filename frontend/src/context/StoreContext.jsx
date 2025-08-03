@@ -13,7 +13,7 @@ const StoreContextProvider = (props) => {
         setCardItems((prev)=>({...prev,[itemId]:prev[itemId]+1}))
     }
   }
-  const removeFormCard=(itemId)=>{
+  const removeFromCard=(itemId)=>{
     setCardItems((prev)=>({...prev,[itemId]:prev[itemId]-1}))
 
   }
@@ -26,7 +26,7 @@ const StoreContextProvider = (props) => {
     cardItems,
     setCardItems,
     addtocard,
-    removeFormCard
+    removeFromCard
   };
 
   return (

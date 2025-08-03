@@ -5,7 +5,7 @@ import { StoreContext } from "../../context/StoreContext"; // ✅ Import context
 
 const Fooditem = ({ id, name, price, description, image }) => {
   const [itemCount, setItemCount] = useState(0);
-  const { addtocard, removeFormCard } = useContext(StoreContext); // ✅ Use correct names
+  const { addtocard, removeFromCard } = useContext(StoreContext); // ✅ Use correct names
 
   return (
     <div className="food-item">
@@ -27,7 +27,7 @@ const Fooditem = ({ id, name, price, description, image }) => {
             <img
               onClick={() => {
                 setItemCount((prev) => Math.max(prev - 1, 0));
-                removeFormCard(id); // ✅ Correct usage
+                removeFromCard(id); // ✅ Correct usage
               }}
               src={assets.remove_icon_red}
               alt="Remove"
