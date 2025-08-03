@@ -7,10 +7,10 @@ import Card from "./pages/Card/Card";
 import Footer from "./components/Footer/Footer";
 import Loginpopup from "./components/Loginpopup/Loginpopup";
 const App = () => {
-  const [showLogin,setShowLogin]=useState(false)
+  const [showLogin, setShowLogin] = useState(false);
   return (
     <>
-    {showLogin?<Loginpopup setShowLogin={setShowLogin}/>:<></>};
+      {showLogin ? <Loginpopup setShowLogin={setShowLogin} /> : <></>};
       <div className="app">
         <Navbar setShowLogin={setShowLogin} />
         <Routes>
