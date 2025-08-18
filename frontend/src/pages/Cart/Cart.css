@@ -123,6 +123,12 @@
   background-color: #eaeaea;
   border-radius: 4px;
 }
+.cart-promocode-input input{
+  background-color: transparent;
+  border: none;
+  outline: none;
+  padding-left: 10px;
+}
 .cart-promocode-input button{
   width: max(10vw,150px);
   padding: 12px 5px;
@@ -130,4 +136,14 @@
   border: none;
   color: white;
   border-radius: 4px;
+}
+@media (max-width:750px) {
+  .cart-bottom{
+    flex-direction: column-reverse;
+  }
+  .cart-promocode{
+
+    justify-content: start;
+  }
+  
 }

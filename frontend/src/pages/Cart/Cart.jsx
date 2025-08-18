@@ -3,7 +3,8 @@ import { StoreContext } from "../../context/StoreContext";
 import "./Cart.css";
 
 const Cart = () => {
-  const { cardItems, food_list, removeFromCard } = useContext(StoreContext);
+  const { cardItems, food_list, removeFromCard, getTotalCartAmount } =
+    useContext(StoreContext);
 
   // Check if cart is empty
   const hasItems = Object.values(cardItems).some((quantity) => quantity > 0);
@@ -58,7 +59,7 @@ const Cart = () => {
           <div>
             <div className="cart-total-details">
               <p>Subtotal</p>
-              <p>{0}</p>
+              <p>{getTotalCartAmount()}</p>
             </div>
             <div className="cart-total-details">
               <p>Delivery Fee</p>
@@ -66,7 +67,7 @@ const Cart = () => {
             </div>
             <div className="cart-total-details">
               <p>Total</p>
-              <p>{0}</p>
+              <p>{getTotalCartAmount() + 2}</p>
             </div>
           </div>
           <button>PROCEED TO CHECKOUT</button>
