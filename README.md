@@ -33,7 +33,7 @@ A full-stack **Food Delivery System** where users can browse food items, add the
 ---
 
 ## 📂 Project Structure
-
+```bash
 food-delivery-system/
 │-- client/ # Frontend (React + Vite)
 │-- server/ # Backend (Node + Express)
@@ -44,7 +44,7 @@ food-delivery-system/
 │-- .env # Environment variables
 │-- package.json
 │-- README.md
-
+```
 
 ---
 
