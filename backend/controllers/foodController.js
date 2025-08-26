@@ -37,13 +37,31 @@ try {
 }
 
 //remove food item
-const removeFood=async(req,res)=>{
-   try {
-       const food=foodModel.findById(req.body.id);
-       fs.unlink(`uploads/${food.}`)
-   } catch (error) {
-    
-   }
-}
+const removeFood = async (req, res) => {
+  try {
+    const food = await foodModel.findById(req.body.id);
+    if (!food) {
+      return res.json({ success: false, message: "Food not found" });
+    }
+
+    // delete image file safely
+    fs.unlink(`uploads/${food.image}`, (err) => {
+      if (err) {
+        console.error("Error deleting image:", err);
+      } else {
+        console.log("Image deleted successfully");
+      }
+    });
+
+    // delete from DB
+    await foodModel.findByIdAndDelete(req.body.id);
+
+    res.json({ success: true, message: "Food Removed" });
+  } catch (error) {
+    console.error(error);
+    res.json({ success: false, message: "Error" });
+  }
+};
+
 
 export{addFood,listFood,removeFood}
