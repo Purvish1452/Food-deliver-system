@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import "./Add.css";
 import { assets } from "../../assets/assets.js";
 import axios from "axios";
+import { toast } from "react-toastify";
 const Add = () => {
   const url = "http://localhost:3000";
   const [image, setImage] = useState(false);
@@ -35,6 +36,9 @@ const Add = () => {
         category: "salad",
       });
       setImage(false);
+      toast.success(response.data.message);
+    } else {
+      toast.error(response.data.message);
     }
   };
 

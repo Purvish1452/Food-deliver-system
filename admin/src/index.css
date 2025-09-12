@@ -1,33 +1,39 @@
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap');
 
-*{
-  padding:0;
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Optional global styles */
+* {
   margin: 0;
+  padding: 0;
   box-sizing: border-box;
-  font-family: Outfit;
+  font-family: 'Outfit', sans-serif;
 }
-body{
-    min-height: 100vh;
-    background-color: #fcfcfc;
 
+body {
+  min-height: 100vh;
+  background-color: #fcfcfc;
 }
-a{
-   text-decoration: none;
-   color: inherit;
 
+a {
+  text-decoration: none;
+  color: inherit;
 }
-hr{
+
+hr {
   border: none;
   height: 1px;
   background-color: #a9a9a9;
 }
-.app-content{
+
+.app-content {
   display: flex;
-  
-  
 }
-.flex-col{
+
+.flex-col {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 10px; /* Tailwind: gap-2.5 */
 }

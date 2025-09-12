@@ -1,0 +1,6 @@
+.list-table-formate img {
+  width: 80px;       /* desired width */
+  height: 80px;      /* desired height */
+  object-fit: cover; /* crop image to fit without stretching */
+  border-radius: 8px; /* optional: rounded corners */
+}
