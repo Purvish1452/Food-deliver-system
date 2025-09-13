@@ -37,3 +37,6 @@ hr {
   flex-direction: column;
   gap: 10px; /* Tailwind: gap-2.5 */
 }
+.cursor{
+  cursor: pointer;
+}
