@@ -1,68 +1,63 @@
-import React, { createContext, useEffect, useState } from "react";
+import React, { createContext, useState } from "react";
 import { food_list } from "../assets/assets";
 
-// Create context
 export const StoreContext = createContext(null);
 
 const StoreContextProvider = (props) => {
-  const [cardItems, setCardItems] = useState({});
+  const [cartItems, setCartItems] = useState({});
+  const url = "http://localhost:3000"; // ✅ backend base URL
+  const [token, setToken] = useState(localStorage.getItem("token") || "");
 
-  // Add one item to cart
-  const addtocard = (itemId) => {
-    setCardItems((prev) => {
-      if (!prev[itemId]) {
-        return { ...prev, [itemId]: 1 };
+  const addToCart = (itemId) => {
+    setCartItems((prev) => ({
+      ...prev,
+      [itemId]: (prev[itemId] || 0) + 1,
+    }));
+  };
+
+  const removeFromCart = (itemId) => {
+    setCartItems((prev) => {
+      if (!prev[itemId]) return prev;
+      const updated = { ...prev };
+      if (updated[itemId] > 1) {
+        updated[itemId] -= 1;
       } else {
-        return { ...prev, [itemId]: prev[itemId] + 1 };
+        delete updated[itemId];
       }
+      return updated;
     });
   };
 
-  // Remove one item from cart
-  const removeFromCard = (itemId) => {
-    setCardItems((prevItems) => {
-      const updatedItems = { ...prevItems };
-
-      if (!updatedItems[itemId]) return prevItems; // Item not in card, nothing to remove
-
-      if (updatedItems[itemId] > 1) {
-        updatedItems[itemId] -= 1; // Decrease quantity by 1
-      } else {
-        delete updatedItems[itemId]; // Remove item if quantity is 1 or less
-      }
-
-      return updatedItems;
-    });
-  };
-
-  // ❌ Remove all quantities of item from cart
   const deleteFromCart = (itemId) => {
-    setCardItems((prevItems) => {
-      const updatedCart = { ...prevItems };
-      delete updatedCart[itemId];
-      return updatedCart;
+    setCartItems((prev) => {
+      const updated = { ...prev };
+      delete updated[itemId];
+      return updated;
     });
   };
 
   const getTotalCartAmount = () => {
-    let totalAmount = 0;
-    for (const item in cardItems) {
-      if (cardItems[item] > 0) {
-        let itemInfo = food_list.find((product) => product._id == item);
-        totalAmount += itemInfo.price * cardItems[item];
+    let total = 0;
+    for (const item in cartItems) {
+      if (cartItems[item] > 0) {
+        const itemInfo = food_list.find((p) => p._id === item);
+        total += itemInfo.price * cartItems[item];
       }
     }
-    return totalAmount;
+    return total;
   };
 
   const contextValue = {
     food_list,
-    cardItems,
-    setCardItems,
-    addtocard,
-    removeFromCard,
+    cartItems,
+    setCartItems,
+    addToCart,
+    removeFromCart,
     deleteFromCart,
     getTotalCartAmount,
+    url,
+    token,
+    setToken,
   };
 
   return (
