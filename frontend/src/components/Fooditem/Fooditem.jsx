@@ -5,7 +5,9 @@ import { StoreContext } from "../../context/StoreContext"; // ✅ Import context
 
 const Fooditem = ({ id, name, price, description, image }) => {
   const [itemCount, setItemCount] = useState(0);
-  const { addtocard, removeFromCard } = useContext(StoreContext); // ✅ Use correct names
+
+  // ✅ Use correct names from context
+  const { addToCart, removeFromCart } = useContext(StoreContext);
 
   return (
     <div className="food-item">
@@ -17,7 +19,7 @@ const Fooditem = ({ id, name, price, description, image }) => {
             className="add"
             onClick={() => {
               setItemCount(1);
-              addtocard(id); // ✅ Correct usage
+              addToCart(id); // ✅ Correct usage
             }}
             src={assets.add_icon_white}
             alt="Add"
@@ -27,7 +29,7 @@ const Fooditem = ({ id, name, price, description, image }) => {
             <img
               onClick={() => {
                 setItemCount((prev) => Math.max(prev - 1, 0));
-                removeFromCard(id); // ✅ Correct usage
+                removeFromCart(id); // ✅ Correct usage
               }}
               src={assets.remove_icon_red}
               alt="Remove"
@@ -36,7 +38,7 @@ const Fooditem = ({ id, name, price, description, image }) => {
             <img
               onClick={() => {
                 setItemCount((prev) => prev + 1);
-                addtocard(id); // ✅ Correct usage
+                addToCart(id); // ✅ Correct usage
               }}
               src={assets.add_icon_green}
               alt="Add"

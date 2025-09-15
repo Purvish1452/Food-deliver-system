@@ -4,16 +4,14 @@ import "./Cart.css";
 import { useNavigate } from "react-router-dom";
 
 const Cart = () => {
-  const { cardItems, food_list, removeFromCard, getTotalCartAmount } =
+  const { cartItems, food_list, removeFromCart, getTotalCartAmount } =
     useContext(StoreContext);
 
   const navigate = useNavigate();
-  // Check if cart is empty
-  const hasItems = Object.values(cardItems).some((quantity) => quantity > 0);
 
-  const handleRemoveItem = (itemId) => {
-    removeFromCard(itemId);
-  };
+  // Check if cart is empty
+  const hasItems =
+    cartItems && Object.values(cartItems).some((quantity) => quantity > 0);
 
   return (
     <div className="cart">
@@ -33,17 +31,17 @@ const Cart = () => {
           </div>
         ) : (
           food_list.map((item) => {
-            if (cardItems[item._id] > 0) {
+            if (cartItems[item._id] > 0) {
               return (
                 <div key={item._id} className="cart-item">
                   <img src={item.image} alt={item.name} />
                   <p>{item.name}</p>
                   <p>₹{item.price}</p>
-                  <p>{cardItems[item._id]}</p>
-                  <p>₹{item.price * cardItems[item._id]}</p>
+                  <p>{cartItems[item._id]}</p>
+                  <p>₹{item.price * cartItems[item._id]}</p>
                   <p
                     className="cart-remove-icon"
-                    onClick={() => handleRemoveItem(item._id)}
+                    onClick={() => removeFromCart(item._id)}
                   >
                     ❌
                   </p>
@@ -55,22 +53,24 @@ const Cart = () => {
           })
         )}
       </div>
+
+      {/* Cart totals */}
       <div className="cart-bottom">
         <div className="cart-total">
           <h2>Cart Totals</h2>
           <div>
             <div className="cart-total-details">
               <p>Subtotal</p>
-              <p>${getTotalCartAmount()}</p>
+              <p>₹{getTotalCartAmount()}</p>
             </div>
             <div className="cart-total-details">
               <p>Delivery Fee</p>
-              <p>${getTotalCartAmount() === 0 ? 0 : 2}</p>
+              <p>₹{getTotalCartAmount() === 0 ? 0 : 20}</p>
             </div>
             <div className="cart-total-details">
               <p>Total</p>
               <p>
-                ${getTotalCartAmount() === 0 ? 0 : getTotalCartAmount() + 2}
+                ₹{getTotalCartAmount() === 0 ? 0 : getTotalCartAmount() + 20}
               </p>
             </div>
           </div>
@@ -80,7 +80,7 @@ const Cart = () => {
         </div>
         <div className="cart-promocode">
           <div>
-            <p>If you have Promo code,Enter it here </p>
+            <p>If you have Promo code, Enter it here </p>
             <div className="cart-promocode-input">
               <input type="text" placeholder="promo code" />
               <button>Submit</button>
