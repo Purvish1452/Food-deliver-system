@@ -7,12 +7,16 @@ const Fooditem = ({ id, name, price, description, image }) => {
   const [itemCount, setItemCount] = useState(0);
 
   // ✅ Use correct names from context
-  const { addToCart, removeFromCart } = useContext(StoreContext);
+  const { addToCart, removeFromCart, url } = useContext(StoreContext);
 
   return (
     <div className="food-item">
       <div className="food-item-img-container">
-        <img className="food-item-image" src={image} alt={name} />
+        <img
+          className="food-item-image"
+          src={url + "/images/" + image}
+          alt={name}
+        />
 
         {!itemCount ? (
           <img
