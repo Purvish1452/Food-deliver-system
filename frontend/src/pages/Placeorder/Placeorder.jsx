@@ -19,19 +19,21 @@ const Placeorder = () => {
     country: "",
   });
 
-  // Handle input change
   const onchangeHandler = (event) => {
     const { name, value } = event.target;
     setData((prev) => ({ ...prev, [name]: value }));
   };
 
-  // Place order
   const placeOrder = async (event) => {
     event.preventDefault();
 
+    if (!token) {
+      alert("Please login first");
+      return;
+    }
+
     let orderItems = [];
 
-    // ✅ CLONE items (DO NOT mutate food_list)
     food_list.forEach((item) => {
       if (cartItems[item._id] > 0) {
         orderItems.push({
@@ -53,8 +55,10 @@ const Placeorder = () => {
     };
 
     try {
-      const response = await axios.post(url + "/api/order/place", OrderData, {
-        headers: { token },
+      const response = await axios.post(`${url}/api/order/place`, OrderData, {
+        headers: {
+          Authorization: `Bearer ${token}`, // ✅ FIX
+        },
       });
 
       if (response.data.success) {
@@ -63,8 +67,11 @@ const Placeorder = () => {
         alert(response.data.message || "Order failed");
       }
     } catch (error) {
-      console.error(error);
-      alert("Server error");
+      console.error(
+        "Place order error:",
+        error.response?.data || error.message
+      );
+      alert("Unauthorized or server error");
     }
   };
 
@@ -75,85 +82,75 @@ const Placeorder = () => {
 
         <div className="multi-fields">
           <input
-            required
             name="firstName"
+            required
             value={data.firstName}
             onChange={onchangeHandler}
-            type="text"
             placeholder="First Name"
           />
           <input
-            required
             name="lastName"
+            required
             value={data.lastName}
             onChange={onchangeHandler}
-            type="text"
             placeholder="Last Name"
           />
         </div>
 
         <input
-          required
           name="email"
+          required
           value={data.email}
           onChange={onchangeHandler}
-          type="email"
-          placeholder="Email address"
+          placeholder="Email"
         />
-
         <input
-          required
           name="street"
+          required
           value={data.street}
           onChange={onchangeHandler}
-          type="text"
           placeholder="Street"
         />
 
         <div className="multi-fields">
           <input
-            required
             name="city"
+            required
             value={data.city}
             onChange={onchangeHandler}
-            type="text"
             placeholder="City"
           />
           <input
-            required
             name="state"
+            required
             value={data.state}
             onChange={onchangeHandler}
-            type="text"
             placeholder="State"
           />
         </div>
 
         <div className="multi-fields">
           <input
-            required
             name="zipcode"
+            required
             value={data.zipcode}
             onChange={onchangeHandler}
-            type="text"
             placeholder="Zip code"
           />
           <input
-            required
             name="country"
+            required
             value={data.country}
             onChange={onchangeHandler}
-            type="text"
             placeholder="Country"
           />
         </div>
 
         <input
-          required
           name="phone"
+          required
           value={data.phone}
           onChange={onchangeHandler}
-          type="text"
           placeholder="Phone"
         />
       </div>
@@ -161,22 +158,7 @@ const Placeorder = () => {
       <div className="place-order-right">
         <div className="cart-total">
           <h2>Cart Totals</h2>
-
-          <div className="cart-total-details">
-            <p>Subtotal</p>
-            <p>${getTotalCartAmount()}</p>
-          </div>
-
-          <div className="cart-total-details">
-            <p>Delivery Fee</p>
-            <p>${getTotalCartAmount() === 0 ? 0 : 2}</p>
-          </div>
-
-          <div className="cart-total-details">
-            <p>Total</p>
-            <p>${getTotalCartAmount() === 0 ? 0 : getTotalCartAmount() + 2}</p>
-          </div>
-
+          <p>Total: ₹{getTotalCartAmount() + 2}</p>
           <button type="submit">PROCEED TO PAYMENT</button>
         </div>
       </div>
