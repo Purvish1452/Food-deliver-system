@@ -7,7 +7,7 @@ const Placeorder = () => {
   const { getTotalCartAmount, token, food_list, cartItems, url } =
     useContext(StoreContext);
 
-  // Form state
+  // Address form state
   const [data, setData] = useState({
     firstName: "",
     lastName: "",
@@ -30,16 +30,23 @@ const Placeorder = () => {
     setData((prev) => ({ ...prev, [name]: value }));
   };
 
-  // Fetch orders
+  // ✅ FETCH USER ORDERS (FIXED API)
   const fetchOrders = async () => {
     if (!token) return;
     setLoading(true);
+
     try {
-      const res = await axios.get(`${url}/api/order/get`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      setOrders(res.data.orders);
-      console.log("Orders fetched:", res.data.orders);
+      const res = await axios.post(
+        `${url}/api/order/userorders`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      setOrders(res.data.data || []);
     } catch (error) {
       console.error(
         "Error fetching orders:",
@@ -54,7 +61,7 @@ const Placeorder = () => {
     fetchOrders();
   }, [token]);
 
-  // Place order
+  // ✅ PLACE ORDER + STRIPE REDIRECT (FIXED)
   const placeOrder = async (event) => {
     event.preventDefault();
 
@@ -63,7 +70,7 @@ const Placeorder = () => {
       return;
     }
 
-    // Prepare items from cart
+    // Prepare cart items
     let orderItems = [];
     food_list.forEach((item) => {
       if (cartItems[item._id] > 0) {
@@ -82,18 +89,19 @@ const Placeorder = () => {
     const OrderData = {
       address: data,
       items: orderItems,
-      amount: getTotalCartAmount() + 2,
+      amount: getTotalCartAmount() + 2, // delivery charge
     };
 
     try {
       const response = await axios.post(`${url}/api/order/place`, OrderData, {
-        headers: { Authorization: `Bearer ${token}` },
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       });
 
       if (response.data.success) {
-        alert("Order placed successfully!");
-        // Refresh orders immediately
-        fetchOrders();
+        // 🔥 STRIPE PAYMENT PAGE OPENS HERE
+        window.location.href = response.data.session_url;
       } else {
         alert(response.data.message || "Order failed");
       }
@@ -136,6 +144,7 @@ const Placeorder = () => {
             onChange={onchangeHandler}
             placeholder="Email"
           />
+
           <input
             name="street"
             required
@@ -196,10 +205,13 @@ const Placeorder = () => {
         </div>
       </form>
 
+      {/* ✅ USER ORDERS SECTION */}
       <div className="orders-section">
         <h2>Your Orders</h2>
+
         {loading && <p>Loading orders...</p>}
         {!loading && orders.length === 0 && <p>No orders found.</p>}
+
         {!loading &&
           orders.map((order) => (
             <div
@@ -219,14 +231,15 @@ const Placeorder = () => {
                 <b>Amount:</b> ₹{order.amount}
               </p>
               <p>
-                <b>Date:</b> {new Date(order.createdAt).toLocaleString()}
+                <b>Status:</b> {order.status}
               </p>
               <p>
-                <b>Items:</b>
+                <b>Date:</b> {new Date(order.createdAt).toLocaleString()}
               </p>
+
               <ul>
-                {order.items.map((item) => (
-                  <li key={item._id}>
+                {order.items.map((item, index) => (
+                  <li key={index}>
                     {item.name} x {item.quantity}
                   </li>
                 ))}

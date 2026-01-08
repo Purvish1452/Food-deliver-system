@@ -17,7 +17,7 @@ const MyOrders = () => {
         {},
         {
           headers: {
-            Authorization: `Bearer ${token}`,
+            token: token,
           },
         }
       );

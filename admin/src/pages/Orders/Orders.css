@@ -1,0 +1,121 @@
+.order.add {
+  padding: 30px 40px;
+  background: #ffffff;
+  min-height: 100vh;
+}
+
+.order.add h3 {
+  font-size: 22px;
+  font-weight: 600;
+  color: #444;
+  margin-bottom: 25px;
+}
+
+/* Order List */
+.order-list {
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+}
+
+/* Order Card */
+.order-item {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  border: 1px solid #c58c7a;
+  padding: 25px;
+  background-color: #fff;
+}
+
+/* Left section (icon + details) */
+.order-item img {
+  width: 55px;
+  height: 55px;
+  margin-right: 20px;
+}
+
+/* Middle content */
+.order-item > div {
+  flex: 1;
+}
+
+/* Food items line */
+.order-item-food {
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 10px;
+  line-height: 1.5;
+}
+
+/* Customer name */
+.order-item-name {
+  font-weight: 600;
+  color: #555;
+  margin-bottom: 6px;
+}
+
+/* Address */
+.order-item-address p {
+  font-size: 14px;
+  color: #777;
+  margin: 2px 0;
+}
+
+/* Phone */
+.order-item-phone {
+  margin-top: 5px;
+  font-weight: 500;
+  color: #333;
+}
+
+/* Right info section */
+.order-item p {
+  font-size: 14px;
+  color: #555;
+}
+
+/* Items count + price alignment */
+.order-item > div > p:nth-last-child(3),
+.order-item > div > p:nth-last-child(2) {
+  margin-top: 10px;
+}
+
+/* Price */
+.order-item p:last-of-type {
+  font-weight: 600;
+  font-size: 15px;
+}
+
+/* Status dropdown */
+.order-item select {
+  padding: 8px 14px;
+  border: 1px solid #c58c7a;
+  background-color: #fff3ef;
+  color: #333;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+/* Hover + focus */
+.order-item select:focus {
+  outline: none;
+  display:inline;
+  border-color: #a05a45;
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+  .order-item {
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .order-item img {
+    margin-bottom: 10px;
+  }
+
+  .order-item select {
+    width: 100%;
+  }
+}
