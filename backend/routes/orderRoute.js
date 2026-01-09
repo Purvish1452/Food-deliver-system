@@ -14,7 +14,7 @@ orderRouter.post("/place", authMiddleware, placeorder);
 orderRouter.post("/verify", authMiddleware, verifyOrder);
 orderRouter.post("/userorders", authMiddleware, userOrders);
 orderRouter.get("/list", listOrders); // admin
-orderRouter.post("/staus",updateStatus);
+orderRouter.post("/status",updateStatus);
 
 
 export default orderRouter;

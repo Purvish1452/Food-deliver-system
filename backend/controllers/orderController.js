@@ -4,9 +4,12 @@ import Stripe from "stripe";
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
-// PLACE ORDER
+//
+// ==========================
+// PLACE ORDER (USER)
+// ==========================
 const placeorder = async (req, res) => {
-  const frontend_url = "http://localhost:5173";
+  const frontend_url = "http://localhost:5174";
 
   try {
     const { items, amount, address } = req.body;
@@ -27,8 +30,10 @@ const placeorder = async (req, res) => {
 
     await newOrder.save();
 
+    // Clear user cart
     await userModel.findByIdAndUpdate(userId, { cartData: {} });
 
+    // Stripe line items
     const line_items = items.map((item) => ({
       price_data: {
         currency: "inr",
@@ -38,6 +43,7 @@ const placeorder = async (req, res) => {
       quantity: item.quantity,
     }));
 
+    // Delivery charges
     line_items.push({
       price_data: {
         currency: "inr",
@@ -62,31 +68,40 @@ const placeorder = async (req, res) => {
   }
 };
 
-// VERIFY PAYMENT
+//
+// ==========================
+// VERIFY PAYMENT (STRIPE)
+// ==========================
 const verifyOrder = async (req, res) => {
   const { orderId, success } = req.body;
 
   try {
     const order = await orderModel.findById(orderId);
     if (!order) {
-      return res.status(404).json({ success: false, message: "Order not found" });
+      return res.status(404).json({
+        success: false,
+        message: "Order not found",
+      });
     }
 
     if (success === "true") {
       order.payment = true;
       order.status = "Payment Completed";
       await order.save();
-      return res.json({ success: true, message: "Paid" });
+      return res.json({ success: true, message: "Payment verified" });
     } else {
       return res.json({ success: false, message: "Payment failed" });
     }
   } catch (error) {
     console.error("Verify Error:", error);
-    return res.status(500).json({ success: false, message: "Server error" });
+    res.status(500).json({ success: false, message: "Server error" });
   }
 };
 
-// ✅ USER ORDERS (FIXED)
+//
+// ==========================
+// USER ORDERS (MY ORDERS)
+// ==========================
 const userOrders = async (req, res) => {
   try {
     const orders = await orderModel.find({ userId: req.userId });
@@ -97,24 +112,41 @@ const userOrders = async (req, res) => {
   }
 };
 
-// ADMIN ORDERS
+//
+// ==========================
+// ADMIN: LIST ALL ORDERS
+// ==========================
 const listOrders = async (req, res) => {
   try {
     const orders = await orderModel.find({});
     res.json({ success: true, data: orders });
   } catch (error) {
     console.log(error);
-    res.json({ success: false, message: "Error" });
+    res.json({ success: false, message: "Error fetching orders" });
   }
 };
 
-//api for updating orderstatus
-const updateStatus =async(req,res)=>{
-    try {
-      await orderModel
-    } catch (error) {
-      
-    }
-}
+//
+// ==========================
+// ADMIN: UPDATE ORDER STATUS
+// ==========================
+const updateStatus = async (req, res) => {
+  try {
+    const { orderId, status } = req.body;
 
-export { placeorder, verifyOrder, userOrders, listOrders ,updateStatus};
+    await orderModel.findByIdAndUpdate(orderId, { status });
+
+    res.json({ success: true, message: "Order status updated" });
+  } catch (error) {
+    console.log(error);
+    res.json({ success: false, message: "Error updating status" });
+  }
+};
+
+export {
+  placeorder,
+  verifyOrder,
+  userOrders,
+  listOrders,
+  updateStatus,
+};

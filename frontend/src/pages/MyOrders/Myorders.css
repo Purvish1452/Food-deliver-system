@@ -1,73 +1,97 @@
 .my-orders {
-  padding: 20px;
+  padding: 40px 6%;
+  background: #f7f7f7;
+  min-height: 100vh;
 }
 
 .my-orders h2 {
-  margin-bottom: 20px;
-  font-size: 24px;
+  font-size: 30px;
+  margin-bottom: 30px;
+  color: #222;
 }
 
-.container {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-}
-
+/* Order Card */
 .my-orders-order {
+  display: grid;
+  grid-template-columns: 60px 1.5fr 1fr 1fr 160px;
+  align-items: center;
+  gap: 20px;
+  background: #fff;
+  padding: 20px;
+  border-radius: 14px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+  margin-bottom: 20px;
+}
+
+/* Icon */
+.my-orders-order img {
+  width: 45px;
+}
+
+/* Items */
+.order-items {
+  font-size: 15px;
+  color: #444;
+  line-height: 1.6;
+}
+
+/* Amount */
+.order-amount {
+  font-size: 18px;
+  font-weight: 600;
+  color: #111;
+}
+
+/* Items count */
+.order-count {
+  font-size: 14px;
+  color: #666;
+}
+
+/* Status */
+.order-status {
   display: flex;
   align-items: center;
-  border: 1px solid #ddd;
-  padding: 15px 20px;
-  border-radius: 8px;
-  gap: 15px;
-  background-color: #fff;
-  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.05);
-}
-
-.my-orders-order img {
-  width: 50px;
-  height: 50px;
-}
-
-.order-details {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
-}
-
-.order-items {
-  font-size: 16px;
-  line-height: 1.4;
-}
-
-.order-amount,
-.order-count,
-.order-status {
-  font-size: 14px;
-}
-
-.track-btn {
-  background-color: #f8d7da;
-  color: #721c24;
-  border: none;
-  padding: 6px 12px;
-  border-radius: 5px;
-  cursor: pointer;
-  font-weight: bold;
-  transition: 0.2s;
-}
-
-.track-btn:hover {
-  background-color: #f5c6cb;
-}
-
-.no-orders {
-  color: #888;
-  font-style: italic;
+  gap: 6px;
+  font-size: 15px;
+  font-weight: 500;
 }
 
 .status-dot {
-  margin-right: 5px;
-  font-size: 14px;
+  font-size: 16px;
+}
+
+/* Button */
+.track-btn {
+  background: #ff4d4f;
+  color: white;
+  border: none;
+  padding: 12px 0;
+  border-radius: 10px;
+  font-size: 15px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.track-btn:hover {
+  background: #e13d3f;
+}
+
+/* Empty text */
+.no-orders {
+  text-align: center;
+  color: #666;
+  font-size: 16px;
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+  .my-orders-order {
+    grid-template-columns: 1fr;
+    text-align: left;
+  }
+
+  .track-btn {
+    width: 100%;
+  }
 }

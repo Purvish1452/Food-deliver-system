@@ -17,7 +17,7 @@ const MyOrders = () => {
         {},
         {
           headers: {
-            token: token,
+            Authorization: `Bearer ${token}`,
           },
         }
       );
@@ -49,35 +49,33 @@ const MyOrders = () => {
             <div key={order._id} className="my-orders-order">
               <img src={assets.parcel_icon} alt="order" />
 
-              <div className="order-details">
-                <p className="order-items">
-                  {order.items?.map((item, i) => (
-                    <span key={i}>
-                      {item.name} x {item.quantity}
-                      {i < order.items.length - 1 ? ", " : ""}
-                    </span>
-                  ))}
-                </p>
-
-                <p className="order-amount">₹{order.amount}</p>
-                <p className="order-count">Items: {order.items.length}</p>
-                <p className="order-status">
-                  <span
-                    className="status-dot"
-                    style={{
-                      color:
-                        order.status.toLowerCase() === "delivered"
-                          ? "green"
-                          : "orange",
-                    }}
-                  >
-                    &#x25cf;
+              <p className="order-items">
+                {order.items.map((item, i) => (
+                  <span key={i}>
+                    {item.name} x {item.quantity}
+                    {i < order.items.length - 1 ? ", " : ""}
                   </span>
-                  {order.status}
-                </p>
-              </div>
+                ))}
+              </p>
 
-              <button className="track-btn">Track Order</button>
+              <p className="order-amount">₹{order.amount}</p>
+
+              <p className="order-status">
+                <span
+                  className="status-dot"
+                  style={{
+                    color:
+                      order.status.toLowerCase() === "delivered"
+                        ? "green"
+                        : "orange",
+                  }}
+                >
+                  ●
+                </span>
+                {order.status}
+              </p>
+
+              <button onClick={fetchOrders} className="track-btn">Track Order</button>
             </div>
           ))
         )}
